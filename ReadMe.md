@@ -6,7 +6,7 @@ Install NodeJs
 
 Install npm
 
-Install docker on your machine to run the backend with docker
+Install docker on your machine to run the backend/frontend or both with docker
 
 Install NestJs
 
