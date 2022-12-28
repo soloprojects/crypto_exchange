@@ -1,0 +1,20 @@
+version: "3.8"
+services:
+  frontend:
+    # image: solomon-nweze/nestjs-dockerized 
+    build:
+      dockerfile: Dockerfile
+      context: .
+      # Only will build development stage from our dockerfile
+      target: development
+    # Mount our host Directory to the docker container
+    # Mount (.) current directory to the docker container solomon/src/app
+    # reflect file changes from host to container
+    volumes:
+      - .:/solomon/src/crypto_frontend
+      - /solomon/src/crypto_frontend/node_modules
+    # Run in Debug Mode: npm run start:debug --> Don't forget to start your vscode debugger!
+    # Run in dev Mode: npm run start:dev
+    command: npm start    
+    ports:
+      - 3000:3000
