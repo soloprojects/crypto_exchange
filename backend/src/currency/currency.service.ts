@@ -22,7 +22,7 @@ export class CurrencyService {
     return await this.currRepo.save(createCurrencyDto);
   }
 
-  //@Cron(CronExpression.EVERY_5_SECONDS)
+  @Cron(CronExpression.EVERY_5_MINUTES)
   async store() {
     const currArr: string[] = ['GBP', 'USD', 'EUR', 'CAD', 'NGN'];
     const coinLayerApi =
