@@ -1,0 +1,57 @@
+version: "3.8"
+services:
+  api:
+    # image: solomon-nweze/nestjs-dockerized 
+    build:
+      dockerfile: Dockerfile
+      context: .
+      # Only will build development stage from our dockerfile
+      target: development
+    # Mount our host Directory to the docker container
+    # Mount (.) current directory to the docker container solomon/src/app
+    # reflect file changes from host to container
+    volumes:
+      - .:/solomon/src/crypto_backend
+      - /solomon/src/crypto_backend/node_modules
+    # Run in Debug Mode: npm run start:debug --> Don't forget to start your vscode debugger!
+    # Run in dev Mode: npm run start:dev
+    command: npm run start:dev
+    depends_on: 
+      - mysql
+    environment: 
+      DB_HOST: 127.0.0.1
+      DB_USERNAME: root
+      DB_PASSWORD: ""
+      DB_NAME: nest-crypto
+      NODE_ENV: development
+      DB_PORT: 3306
+      PORT: 5000
+    ports:
+      - 8080:5000
+      # debugging port
+      - 9229:9229
+
+  mysql:
+    restart: always
+    image: mysql:5.7
+    environment: 
+      - MYSQL_ROOT_PASSWORD: root
+      - MYSQL_USER: root
+      - MYSQL_PASSWORD: ''
+      - MYSQL_DATABASE: nest-crypto
+    ports:
+      - 3308:3306
+
+    # phpmyadmin
+  phpmyadmin:
+    depends_on:
+      - mysql
+    image: phpmyadmin
+    restart: always
+    ports:
+      - '8080:80'
+    environment:
+      PMA_HOST: mysql
+      MYSQL_ROOT_PASSWORD: password 
+    networks:
+      - mysql-phpmyadmin
