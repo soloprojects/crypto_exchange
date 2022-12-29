@@ -1,12 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { CurrencyService } from '../currency/currency.service';
-import { CurrencyModule } from '../currency/currency.module';
-import { Exchange } from './entities/exchange.entity';
 import { ExchangeController } from './exchange.controller';
 import { ExchangeService } from './exchange.service';
 
 describe('ExchangeController', () => {
   let controller: ExchangeController;
+  let exchangeService: ExchangeService;
+  let currencyService: CurrencyService;
 
   const useData = {
     currency_from: 'BTC',
@@ -39,21 +39,39 @@ describe('ExchangeController', () => {
     }),
   };
 
+  const mockCurrencyService = {};
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      //imports: [CurrencyModule],
       controllers: [ExchangeController],
-      providers: [ExchangeService],
-    })
-      .overrideProvider(ExchangeService)
-      .useValue(mockExchangeService)
-      .compile();
+      providers: [
+        ExchangeService,
+        {
+          provide: ExchangeService,
+          useValue: mockExchangeService,
+        },
+        {
+          provide: CurrencyService,
+          useValue: mockCurrencyService,
+        },
+      ],
+    }).compile();
 
     controller = module.get<ExchangeController>(ExchangeController);
+    exchangeService = module.get<ExchangeService>(ExchangeService);
+    currencyService = module.get<CurrencyService>(CurrencyService);
   });
 
   it('should be defined', () => {
     expect(controller).toBeDefined();
+  });
+
+  it('should be defined', () => {
+    expect(currencyService).toBeDefined();
+  });
+
+  it('should be defined', () => {
+    expect(exchangeService).toBeDefined();
   });
 
   it('Should create an exchange', () => {

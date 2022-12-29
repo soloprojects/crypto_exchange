@@ -7,7 +7,7 @@ import { ExchangeReportDto } from './dto/exchange-report.dto';
 import { PaginateExchangeDto } from './dto/paginate-exchange.dto';
 import { LiveExchangeDto } from './dto/live-exchange.dto';
 import { Exchange } from './entities/exchange.entity';
-import { CurrencyService } from 'src/currency/currency.service';
+import { CurrencyService } from '../currency/currency.service';
 
 @Injectable()
 export class ExchangeService {
@@ -54,7 +54,6 @@ export class ExchangeService {
       Number(myDate[1]) - 1,
       Number(myDate[2]) + 1,
     );
-    console.log(newDate);
     return newDate;
   }
 
